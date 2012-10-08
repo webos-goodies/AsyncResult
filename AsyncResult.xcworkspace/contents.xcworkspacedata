@@ -4,4 +4,7 @@
    <FileRef
       location = "container:AsyncResult.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Kiwi/Kiwi.xcodeproj">
+   </FileRef>
 </Workspace>
