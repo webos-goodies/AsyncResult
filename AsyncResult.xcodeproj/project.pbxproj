@@ -23,10 +23,24 @@
 		5202F8E11622921E00AF7A2B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5202F8E01622921E00AF7A2B /* ViewController.m */; };
 		5202F8E71622927700AF7A2B /* libAsyncResult.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8AE1622919800AF7A2B /* libAsyncResult.a */; };
 		5202F8E91622928900AF7A2B /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8E81622928900AF7A2B /* Accounts.framework */; };
+		523297E1162294C200E41768 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523297E0162294C200E41768 /* SenTestingKit.framework */; };
+		523297E2162294C200E41768 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8C51622921E00AF7A2B /* UIKit.framework */; };
+		523297E3162294C200E41768 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8B11622919800AF7A2B /* Foundation.framework */; };
+		523297E9162294C200E41768 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 523297E7162294C200E41768 /* InfoPlist.strings */; };
+		523297EC162294C200E41768 /* AsyncResultLogicTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 523297EB162294C200E41768 /* AsyncResultLogicTest.m */; };
+		523297F41622952800E41768 /* libAsyncResult.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8AE1622919800AF7A2B /* libAsyncResult.a */; };
+		523297F61622953900E41768 /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 523297F51622953900E41768 /* libKiwi.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		5202F8E51622925800AF7A2B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5202F8A51622919800AF7A2B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5202F8AD1622919800AF7A2B;
+			remoteInfo = AsyncResult;
+		};
+		523297F2162294F400E41768 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5202F8A51622919800AF7A2B /* Project object */;
 			proxyType = 1;
@@ -70,6 +84,14 @@
 		5202F8DF1622921E00AF7A2B /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		5202F8E01622921E00AF7A2B /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		5202F8E81622928900AF7A2B /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		523297DF162294C200E41768 /* AsyncResultLogicTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsyncResultLogicTest.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		523297E0162294C200E41768 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		523297E6162294C200E41768 /* AsyncResultLogicTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AsyncResultLogicTest-Info.plist"; sourceTree = "<group>"; };
+		523297E8162294C200E41768 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		523297EA162294C200E41768 /* AsyncResultLogicTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncResultLogicTest.h; sourceTree = "<group>"; };
+		523297EB162294C200E41768 /* AsyncResultLogicTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncResultLogicTest.m; sourceTree = "<group>"; };
+		523297ED162294C200E41768 /* AsyncResultLogicTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AsyncResultLogicTest-Prefix.pch"; sourceTree = "<group>"; };
+		523297F51622953900E41768 /* libKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libKiwi.a; path = "Kiwi/build/Release-iphoneos/libKiwi.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +115,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		523297DB162294C200E41768 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523297E2162294C200E41768 /* UIKit.framework in Frameworks */,
+				523297E3162294C200E41768 /* Foundation.framework in Frameworks */,
+				523297E1162294C200E41768 /* SenTestingKit.framework in Frameworks */,
+				523297F61622953900E41768 /* libKiwi.a in Frameworks */,
+				523297F41622952800E41768 /* libAsyncResult.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -101,6 +135,7 @@
 			children = (
 				5202F8B31622919800AF7A2B /* AsyncResult */,
 				5202F8CA1622921E00AF7A2B /* AsyncResultDemo */,
+				523297E4162294C200E41768 /* AsyncResultLogicTest */,
 				5202F8B01622919800AF7A2B /* Frameworks */,
 				5202F8AF1622919800AF7A2B /* Products */,
 			);
@@ -111,6 +146,7 @@
 			children = (
 				5202F8AE1622919800AF7A2B /* libAsyncResult.a */,
 				5202F8C31622921E00AF7A2B /* AsyncResultDemo.app */,
+				523297DF162294C200E41768 /* AsyncResultLogicTest.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -118,10 +154,12 @@
 		5202F8B01622919800AF7A2B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				523297F51622953900E41768 /* libKiwi.a */,
 				5202F8E81622928900AF7A2B /* Accounts.framework */,
 				5202F8B11622919800AF7A2B /* Foundation.framework */,
 				5202F8C51622921E00AF7A2B /* UIKit.framework */,
 				5202F8C81622921E00AF7A2B /* CoreGraphics.framework */,
+				523297E0162294C200E41768 /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -171,6 +209,26 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		523297E4162294C200E41768 /* AsyncResultLogicTest */ = {
+			isa = PBXGroup;
+			children = (
+				523297EA162294C200E41768 /* AsyncResultLogicTest.h */,
+				523297EB162294C200E41768 /* AsyncResultLogicTest.m */,
+				523297E5162294C200E41768 /* Supporting Files */,
+			);
+			path = AsyncResultLogicTest;
+			sourceTree = "<group>";
+		};
+		523297E5162294C200E41768 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				523297E6162294C200E41768 /* AsyncResultLogicTest-Info.plist */,
+				523297E7162294C200E41768 /* InfoPlist.strings */,
+				523297ED162294C200E41768 /* AsyncResultLogicTest-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -209,6 +267,25 @@
 			productReference = 5202F8C31622921E00AF7A2B /* AsyncResultDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		523297DE162294C200E41768 /* AsyncResultLogicTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 523297F0162294C200E41768 /* Build configuration list for PBXNativeTarget "AsyncResultLogicTest" */;
+			buildPhases = (
+				523297DA162294C200E41768 /* Sources */,
+				523297DB162294C200E41768 /* Frameworks */,
+				523297DC162294C200E41768 /* Resources */,
+				523297DD162294C200E41768 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				523297F3162294F400E41768 /* PBXTargetDependency */,
+			);
+			name = AsyncResultLogicTest;
+			productName = AsyncResultLogicTest;
+			productReference = 523297DF162294C200E41768 /* AsyncResultLogicTest.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -232,6 +309,7 @@
 			targets = (
 				5202F8AD1622919800AF7A2B /* AsyncResult */,
 				5202F8C21622921E00AF7A2B /* AsyncResultDemo */,
+				523297DE162294C200E41768 /* AsyncResultLogicTest */,
 			);
 		};
 /* End PBXProject section */
@@ -249,7 +327,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		523297DC162294C200E41768 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523297E9162294C200E41768 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		523297DD162294C200E41768 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5202F8AA1622919800AF7A2B /* Sources */ = {
@@ -270,6 +372,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		523297DA162294C200E41768 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523297EC162294C200E41768 /* AsyncResultLogicTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -277,6 +387,11 @@
 			isa = PBXTargetDependency;
 			target = 5202F8AD1622919800AF7A2B /* AsyncResult */;
 			targetProxy = 5202F8E51622925800AF7A2B /* PBXContainerItemProxy */;
+		};
+		523297F3162294F400E41768 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5202F8AD1622919800AF7A2B /* AsyncResult */;
+			targetProxy = 523297F2162294F400E41768 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -295,6 +410,14 @@
 				5202F8DD1622921E00AF7A2B /* en */,
 			);
 			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		523297E7162294C200E41768 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				523297E8162294C200E41768 /* en */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -380,6 +503,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AsyncResultDemo/AsyncResultDemo-Prefix.pch";
 				INFOPLIST_FILE = "AsyncResultDemo/AsyncResultDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -392,9 +516,46 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AsyncResultDemo/AsyncResultDemo-Prefix.pch";
 				INFOPLIST_FILE = "AsyncResultDemo/AsyncResultDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		523297EE162294C200E41768 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AsyncResultLogicTest/AsyncResultLogicTest-Prefix.pch";
+				INFOPLIST_FILE = "AsyncResultLogicTest/AsyncResultLogicTest-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Kiwi/Kiwi";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		523297EF162294C200E41768 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AsyncResultLogicTest/AsyncResultLogicTest-Prefix.pch";
+				INFOPLIST_FILE = "AsyncResultLogicTest/AsyncResultLogicTest-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-all_load";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/Kiwi/Kiwi";
+				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -417,12 +578,22 @@
 				5202F8BE1622919800AF7A2B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5202F8E21622921E00AF7A2B /* Build configuration list for PBXNativeTarget "AsyncResultDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5202F8E31622921E00AF7A2B /* Debug */,
 				5202F8E41622921E00AF7A2B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		523297F0162294C200E41768 /* Build configuration list for PBXNativeTarget "AsyncResultLogicTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				523297EE162294C200E41768 /* Debug */,
+				523297EF162294C200E41768 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
