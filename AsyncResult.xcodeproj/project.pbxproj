@@ -27,16 +27,32 @@
 		523297E2162294C200E41768 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8C51622921E00AF7A2B /* UIKit.framework */; };
 		523297E3162294C200E41768 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8B11622919800AF7A2B /* Foundation.framework */; };
 		523297E9162294C200E41768 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 523297E7162294C200E41768 /* InfoPlist.strings */; };
-		523297EC162294C200E41768 /* AsyncResultLogicTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 523297EB162294C200E41768 /* AsyncResultLogicTest.m */; };
 		523297F41622952800E41768 /* libAsyncResult.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8AE1622919800AF7A2B /* libAsyncResult.a */; };
 		523297F61622953900E41768 /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 523297F51622953900E41768 /* libKiwi.a */; };
 		52987CF9162296C900DEDABB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523297E0162294C200E41768 /* SenTestingKit.framework */; };
 		52987CFA162296C900DEDABB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8C51622921E00AF7A2B /* UIKit.framework */; };
 		52987CFB162296C900DEDABB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8B11622919800AF7A2B /* Foundation.framework */; };
 		52987D01162296C900DEDABB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52987CFF162296C900DEDABB /* InfoPlist.strings */; };
-		52987D04162296C900DEDABB /* AsyncResultApplicationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52987D03162296C900DEDABB /* AsyncResultApplicationTest.m */; };
 		52987D0C162296F400DEDABB /* libAsyncResult.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8AE1622919800AF7A2B /* libAsyncResult.a */; };
 		52987D0D162296F900DEDABB /* libKiwi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 523297F51622953900E41768 /* libKiwi.a */; };
+		52F0DA13162299B700E68813 /* AsyncResultInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA0C162299B700E68813 /* AsyncResultInjector.m */; };
+		52F0DA14162299B700E68813 /* NSURLConnection+AsyncResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA0E162299B700E68813 /* NSURLConnection+AsyncResult.m */; };
+		52F0DA15162299B700E68813 /* UIActionSheet+AsyncResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA10162299B700E68813 /* UIActionSheet+AsyncResult.m */; };
+		52F0DA16162299B700E68813 /* UIAlertView+AsyncResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA12162299B700E68813 /* UIAlertView+AsyncResult.m */; };
+		52F0DA1F162299F200E68813 /* AccountStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA18162299F200E68813 /* AccountStoreTest.m */; };
+		52F0DA20162299F200E68813 /* AsyncResultTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA19162299F200E68813 /* AsyncResultTest.m */; };
+		52F0DA21162299F200E68813 /* ChainTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA1A162299F200E68813 /* ChainTest.m */; };
+		52F0DA22162299F200E68813 /* CombineTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA1B162299F200E68813 /* CombineTest.m */; };
+		52F0DA23162299F200E68813 /* TransformTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA1C162299F200E68813 /* TransformTest.m */; };
+		52F0DA24162299F200E68813 /* URLConnectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA1D162299F200E68813 /* URLConnectionTest.m */; };
+		52F0DA25162299F200E68813 /* WaitTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA1E162299F200E68813 /* WaitTest.m */; };
+		52F0DA2816229A1900E68813 /* ActionSheetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA2616229A1900E68813 /* ActionSheetTest.m */; };
+		52F0DA2916229A1900E68813 /* AlertViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA2716229A1900E68813 /* AlertViewTest.m */; };
+		52F0DA2E16229AA600E68813 /* ACAccountStore+AsyncResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA2D16229AA600E68813 /* ACAccountStore+AsyncResult.m */; };
+		52F0DA2F16229AA600E68813 /* ACAccountStore+AsyncResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA2D16229AA600E68813 /* ACAccountStore+AsyncResult.m */; };
+		52F0DA3216229AB500E68813 /* HandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA3116229AB500E68813 /* HandlerMock.m */; };
+		52F0DA3316229AB500E68813 /* HandlerMock.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F0DA3116229AB500E68813 /* HandlerMock.m */; };
+		52F0DA3416229B2E00E68813 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5202F8E81622928900AF7A2B /* Accounts.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,16 +125,33 @@
 		523297E0162294C200E41768 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		523297E6162294C200E41768 /* AsyncResultLogicTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AsyncResultLogicTest-Info.plist"; sourceTree = "<group>"; };
 		523297E8162294C200E41768 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		523297EA162294C200E41768 /* AsyncResultLogicTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncResultLogicTest.h; sourceTree = "<group>"; };
-		523297EB162294C200E41768 /* AsyncResultLogicTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncResultLogicTest.m; sourceTree = "<group>"; };
 		523297ED162294C200E41768 /* AsyncResultLogicTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AsyncResultLogicTest-Prefix.pch"; sourceTree = "<group>"; };
 		523297F51622953900E41768 /* libKiwi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libKiwi.a; path = "Kiwi/build/Release-iphoneos/libKiwi.a"; sourceTree = "<group>"; };
 		52987CF8162296C900DEDABB /* AsyncResultApplicationTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsyncResultApplicationTest.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		52987CFE162296C900DEDABB /* AsyncResultApplicationTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AsyncResultApplicationTest-Info.plist"; sourceTree = "<group>"; };
 		52987D00162296C900DEDABB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		52987D02162296C900DEDABB /* AsyncResultApplicationTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AsyncResultApplicationTest.h; sourceTree = "<group>"; };
-		52987D03162296C900DEDABB /* AsyncResultApplicationTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AsyncResultApplicationTest.m; sourceTree = "<group>"; };
 		52987D05162296C900DEDABB /* AsyncResultApplicationTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AsyncResultApplicationTest-Prefix.pch"; sourceTree = "<group>"; };
+		52F0DA0B162299B700E68813 /* AsyncResultInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncResultInjector.h; sourceTree = "<group>"; };
+		52F0DA0C162299B700E68813 /* AsyncResultInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncResultInjector.m; sourceTree = "<group>"; };
+		52F0DA0D162299B700E68813 /* NSURLConnection+AsyncResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLConnection+AsyncResult.h"; sourceTree = "<group>"; };
+		52F0DA0E162299B700E68813 /* NSURLConnection+AsyncResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLConnection+AsyncResult.m"; sourceTree = "<group>"; };
+		52F0DA0F162299B700E68813 /* UIActionSheet+AsyncResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+AsyncResult.h"; sourceTree = "<group>"; };
+		52F0DA10162299B700E68813 /* UIActionSheet+AsyncResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+AsyncResult.m"; sourceTree = "<group>"; };
+		52F0DA11162299B700E68813 /* UIAlertView+AsyncResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+AsyncResult.h"; sourceTree = "<group>"; };
+		52F0DA12162299B700E68813 /* UIAlertView+AsyncResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+AsyncResult.m"; sourceTree = "<group>"; };
+		52F0DA18162299F200E68813 /* AccountStoreTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountStoreTest.m; sourceTree = "<group>"; };
+		52F0DA19162299F200E68813 /* AsyncResultTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncResultTest.m; sourceTree = "<group>"; };
+		52F0DA1A162299F200E68813 /* ChainTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChainTest.m; sourceTree = "<group>"; };
+		52F0DA1B162299F200E68813 /* CombineTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CombineTest.m; sourceTree = "<group>"; };
+		52F0DA1C162299F200E68813 /* TransformTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransformTest.m; sourceTree = "<group>"; };
+		52F0DA1D162299F200E68813 /* URLConnectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLConnectionTest.m; sourceTree = "<group>"; };
+		52F0DA1E162299F200E68813 /* WaitTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaitTest.m; sourceTree = "<group>"; };
+		52F0DA2616229A1900E68813 /* ActionSheetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetTest.m; sourceTree = "<group>"; };
+		52F0DA2716229A1900E68813 /* AlertViewTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewTest.m; sourceTree = "<group>"; };
+		52F0DA2C16229AA600E68813 /* ACAccountStore+AsyncResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ACAccountStore+AsyncResult.h"; sourceTree = "<group>"; };
+		52F0DA2D16229AA600E68813 /* ACAccountStore+AsyncResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ACAccountStore+AsyncResult.m"; sourceTree = "<group>"; };
+		52F0DA3016229AB500E68813 /* HandlerMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandlerMock.h; sourceTree = "<group>"; };
+		52F0DA3116229AB500E68813 /* HandlerMock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandlerMock.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +179,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52F0DA3416229B2E00E68813 /* Accounts.framework in Frameworks */,
 				523297E2162294C200E41768 /* UIKit.framework in Frameworks */,
 				523297E3162294C200E41768 /* Foundation.framework in Frameworks */,
 				523297E1162294C200E41768 /* SenTestingKit.framework in Frameworks */,
@@ -176,6 +210,8 @@
 				5202F8CA1622921E00AF7A2B /* AsyncResultDemo */,
 				523297E4162294C200E41768 /* AsyncResultLogicTest */,
 				52987CFC162296C900DEDABB /* AsyncResultApplicationTest */,
+				52F0DA2A16229A2700E68813 /* Extras */,
+				52F0DA2B16229A3D00E68813 /* TestUtils */,
 				5202F8B01622919800AF7A2B /* Frameworks */,
 				5202F8AF1622919800AF7A2B /* Products */,
 			);
@@ -208,6 +244,14 @@
 		5202F8B31622919800AF7A2B /* AsyncResult */ = {
 			isa = PBXGroup;
 			children = (
+				52F0DA0B162299B700E68813 /* AsyncResultInjector.h */,
+				52F0DA0C162299B700E68813 /* AsyncResultInjector.m */,
+				52F0DA0D162299B700E68813 /* NSURLConnection+AsyncResult.h */,
+				52F0DA0E162299B700E68813 /* NSURLConnection+AsyncResult.m */,
+				52F0DA0F162299B700E68813 /* UIActionSheet+AsyncResult.h */,
+				52F0DA10162299B700E68813 /* UIActionSheet+AsyncResult.m */,
+				52F0DA11162299B700E68813 /* UIAlertView+AsyncResult.h */,
+				52F0DA12162299B700E68813 /* UIAlertView+AsyncResult.m */,
 				5202F8B61622919800AF7A2B /* AsyncResult.h */,
 				5202F8B81622919800AF7A2B /* AsyncResult.m */,
 				5202F8B41622919800AF7A2B /* Supporting Files */,
@@ -253,8 +297,13 @@
 		523297E4162294C200E41768 /* AsyncResultLogicTest */ = {
 			isa = PBXGroup;
 			children = (
-				523297EA162294C200E41768 /* AsyncResultLogicTest.h */,
-				523297EB162294C200E41768 /* AsyncResultLogicTest.m */,
+				52F0DA19162299F200E68813 /* AsyncResultTest.m */,
+				52F0DA1E162299F200E68813 /* WaitTest.m */,
+				52F0DA1A162299F200E68813 /* ChainTest.m */,
+				52F0DA1B162299F200E68813 /* CombineTest.m */,
+				52F0DA1C162299F200E68813 /* TransformTest.m */,
+				52F0DA1D162299F200E68813 /* URLConnectionTest.m */,
+				52F0DA18162299F200E68813 /* AccountStoreTest.m */,
 				523297E5162294C200E41768 /* Supporting Files */,
 			);
 			path = AsyncResultLogicTest;
@@ -273,8 +322,8 @@
 		52987CFC162296C900DEDABB /* AsyncResultApplicationTest */ = {
 			isa = PBXGroup;
 			children = (
-				52987D02162296C900DEDABB /* AsyncResultApplicationTest.h */,
-				52987D03162296C900DEDABB /* AsyncResultApplicationTest.m */,
+				52F0DA2716229A1900E68813 /* AlertViewTest.m */,
+				52F0DA2616229A1900E68813 /* ActionSheetTest.m */,
 				52987CFD162296C900DEDABB /* Supporting Files */,
 			);
 			path = AsyncResultApplicationTest;
@@ -288,6 +337,24 @@
 				52987D05162296C900DEDABB /* AsyncResultApplicationTest-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		52F0DA2A16229A2700E68813 /* Extras */ = {
+			isa = PBXGroup;
+			children = (
+				52F0DA2C16229AA600E68813 /* ACAccountStore+AsyncResult.h */,
+				52F0DA2D16229AA600E68813 /* ACAccountStore+AsyncResult.m */,
+			);
+			path = Extras;
+			sourceTree = "<group>";
+		};
+		52F0DA2B16229A3D00E68813 /* TestUtils */ = {
+			isa = PBXGroup;
+			children = (
+				52F0DA3016229AB500E68813 /* HandlerMock.h */,
+				52F0DA3116229AB500E68813 /* HandlerMock.m */,
+			);
+			path = TestUtils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -462,6 +529,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5202F8B91622919800AF7A2B /* AsyncResult.m in Sources */,
+				52F0DA13162299B700E68813 /* AsyncResultInjector.m in Sources */,
+				52F0DA14162299B700E68813 /* NSURLConnection+AsyncResult.m in Sources */,
+				52F0DA15162299B700E68813 /* UIActionSheet+AsyncResult.m in Sources */,
+				52F0DA16162299B700E68813 /* UIAlertView+AsyncResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,6 +543,7 @@
 				5202F8D11622921E00AF7A2B /* main.m in Sources */,
 				5202F8D51622921E00AF7A2B /* AppDelegate.m in Sources */,
 				5202F8E11622921E00AF7A2B /* ViewController.m in Sources */,
+				52F0DA2E16229AA600E68813 /* ACAccountStore+AsyncResult.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,7 +551,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				523297EC162294C200E41768 /* AsyncResultLogicTest.m in Sources */,
+				52F0DA1F162299F200E68813 /* AccountStoreTest.m in Sources */,
+				52F0DA20162299F200E68813 /* AsyncResultTest.m in Sources */,
+				52F0DA21162299F200E68813 /* ChainTest.m in Sources */,
+				52F0DA22162299F200E68813 /* CombineTest.m in Sources */,
+				52F0DA23162299F200E68813 /* TransformTest.m in Sources */,
+				52F0DA24162299F200E68813 /* URLConnectionTest.m in Sources */,
+				52F0DA25162299F200E68813 /* WaitTest.m in Sources */,
+				52F0DA2F16229AA600E68813 /* ACAccountStore+AsyncResult.m in Sources */,
+				52F0DA3216229AB500E68813 /* HandlerMock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,7 +567,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52987D04162296C900DEDABB /* AsyncResultApplicationTest.m in Sources */,
+				52F0DA2816229A1900E68813 /* ActionSheetTest.m in Sources */,
+				52F0DA2916229A1900E68813 /* AlertViewTest.m in Sources */,
+				52F0DA3316229AB500E68813 /* HandlerMock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,6 +715,7 @@
 				GCC_PREFIX_HEADER = "AsyncResultDemo/AsyncResultDemo-Prefix.pch";
 				INFOPLIST_FILE = "AsyncResultDemo/AsyncResultDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -647,6 +730,7 @@
 				INFOPLIST_FILE = "AsyncResultDemo/AsyncResultDemo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -776,6 +860,7 @@
 				52987D07162296C900DEDABB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
