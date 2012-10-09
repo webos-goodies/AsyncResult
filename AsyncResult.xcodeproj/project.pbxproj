@@ -244,16 +244,16 @@
 		5202F8B31622919800AF7A2B /* AsyncResult */ = {
 			isa = PBXGroup;
 			children = (
+				5202F8B61622919800AF7A2B /* AsyncResult.h */,
+				5202F8B81622919800AF7A2B /* AsyncResult.m */,
 				52F0DA0B162299B700E68813 /* AsyncResultInjector.h */,
 				52F0DA0C162299B700E68813 /* AsyncResultInjector.m */,
 				52F0DA0D162299B700E68813 /* NSURLConnection+AsyncResult.h */,
 				52F0DA0E162299B700E68813 /* NSURLConnection+AsyncResult.m */,
-				52F0DA0F162299B700E68813 /* UIActionSheet+AsyncResult.h */,
-				52F0DA10162299B700E68813 /* UIActionSheet+AsyncResult.m */,
 				52F0DA11162299B700E68813 /* UIAlertView+AsyncResult.h */,
 				52F0DA12162299B700E68813 /* UIAlertView+AsyncResult.m */,
-				5202F8B61622919800AF7A2B /* AsyncResult.h */,
-				5202F8B81622919800AF7A2B /* AsyncResult.m */,
+				52F0DA0F162299B700E68813 /* UIActionSheet+AsyncResult.h */,
+				52F0DA10162299B700E68813 /* UIActionSheet+AsyncResult.m */,
 				5202F8B41622919800AF7A2B /* Supporting Files */,
 			);
 			path = AsyncResult;

@@ -44,4 +44,6 @@ extern id<AsyncResult> asyncChainOnMainThreadUsingFunction(id<AsyncResult> resul
 extern id<AsyncResult> asyncCombine(NSArray* results);
 extern id<AsyncResult> asyncCombineSuccess(NSArray* results);
 extern id<AsyncResult> asyncTransform(id<AsyncResult> result, id(^transformer)(id value));
+extern id<AsyncResult> asyncTransformOnMainThread(id<AsyncResult> result, id(^transformer)(id value));
 extern id<AsyncResult> asyncTransformUsingFunction(id<AsyncResult> result, id (*transformer)(id value));
+extern id<AsyncResult> asyncTransformOnMainThreadUsingFunction(id<AsyncResult> result, id (*transformer)(id value));

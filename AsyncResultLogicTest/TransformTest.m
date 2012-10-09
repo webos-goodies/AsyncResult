@@ -92,7 +92,35 @@ describe(@"asyncTransform", ^{
         });
     });
 
-    context(@"withFunction", ^{
+    context(@"onMainThread", ^{
+        it(@"should perform asynchronously on success", ^{
+            id<AsyncResult> transformedResult = asyncTransformOnMainThread(result, multiplyResult.blockForTransform);
+            asyncWait(transformedResult, resultCallback.block);
+            [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
+
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                result.asyncValue = [NSNumber numberWithInteger:1];
+            });
+
+            [[expectFutureValue(resultCallback) shouldEventually] beCalledWithValue:[NSNumber numberWithInteger:2] result:transformedResult onMainThread:YES];
+            [[multiplyResult should] beCalledWithValue:[NSNumber numberWithInteger:1] onMainThread:YES];
+        });
+
+        it(@"should not perform asynchronously on error", ^{
+            id<AsyncResult> transformedResult = asyncTransformOnMainThread(result, multiplyResult.blockForTransform);
+            asyncWait(transformedResult, resultCallback.block);
+            [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
+
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                result.asyncError = [NSNumber numberWithInteger:5];
+            });
+
+            [[expectFutureValue(resultCallback) shouldEventually] beCalledWithError:[NSNumber numberWithInteger:5] result:transformedResult onMainThread:NO];
+            [[multiplyResult shouldNot] beCalled];
+        });
+    });
+
+    context(@"usingFunction", ^{
         it(@"should perform on success", ^{
             id<AsyncResult> transformedResult = asyncTransformUsingFunction(result, multiplyTransformer);
             asyncWait(transformedResult, resultCallback.block);
@@ -124,6 +152,34 @@ describe(@"asyncTransform", ^{
             result.asyncError = [NSNumber numberWithInteger:4];
             [[theValue(callCount) should] equal:theValue(0)];
             [[resultCallback should] beCalledWithError:[NSNumber numberWithInteger:4] result:transformedResult onMainThread:YES];
+        });
+
+        it(@"should not perform asynchronously on error", ^{
+            id<AsyncResult> transformedResult = asyncTransformUsingFunction(result, multiplyTransformer);
+            asyncWait(transformedResult, resultCallback.block);
+            [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
+
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                result.asyncError = [NSNumber numberWithInteger:5];
+            });
+
+            [[expectFutureValue(resultCallback) shouldEventually] beCalledWithError:[NSNumber numberWithInteger:5] result:transformedResult onMainThread:NO];
+            [[theValue(callCount) should] equal:theValue(0)];
+        });
+    });
+
+    context(@"onMainThreadUsingFunction", ^{
+        it(@"should perform asynchronously on success", ^{
+            id<AsyncResult> transformedResult = asyncTransformOnMainThreadUsingFunction(result, multiplyTransformer);
+            asyncWait(transformedResult, resultCallback.block);
+            [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
+
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                result.asyncValue = [NSNumber numberWithInteger:1];
+            });
+
+            [[expectFutureValue(resultCallback) shouldEventually] beCalledWithValue:[NSNumber numberWithInteger:2] result:transformedResult onMainThread:YES];
+            assertCallTransformer([NSNumber numberWithInteger:1], YES);
         });
 
         it(@"should not perform asynchronously on error", ^{

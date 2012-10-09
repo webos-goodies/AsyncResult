@@ -125,7 +125,7 @@
 @end
 
 
-#pragma mark - Utility functions
+#pragma mark - asyncWait and variants
 
 void asyncWait(id<AsyncResult> result, void(^handler)(id<AsyncResult> result))
 {
@@ -187,6 +187,9 @@ void asyncWaitErrorOnMainThread(id<AsyncResult> result, void(^handler)(id<AsyncR
     }];
 }
 
+
+#pragma mark - asyncChain and variants
+
 static id<AsyncResult>
 asyncChainInternal(id<AsyncResult> result,
                    id<AsyncResult>(^actionCallback)(id<AsyncResult>),
@@ -243,6 +246,9 @@ id<AsyncResult> asyncChainOnMainThreadUsingFunction(id<AsyncResult> result, id<A
     }, asyncWaitOnMainThread);
 }
 
+
+#pragma mark - asyncCombine and variants
+
 id<AsyncResult> asyncCombine(NSArray* results)
 {
     results = [results copy];
@@ -287,13 +293,38 @@ id<AsyncResult> asyncCombineSuccess(NSArray* results)
     return combinedResult;
 }
 
-id<AsyncResult> asyncTransform(id<AsyncResult> result, id(^transformer)(id))
+
+#pragma mark - asyncTransform and variants
+
+static id<AsyncResult> asyncTransformInternal(id<AsyncResult> result,
+                                              id(^transformBlock)(id value),
+                                              id(*transformFunction)(id value),
+                                              BOOL onMainThread)
 {
     AsyncResult* returnedResult = [[AsyncResult alloc] init];
 
     asyncWait(result, ^(id<AsyncResult> res) {
         if(res.asyncState == AsyncResultStateSuccess) {
-            returnedResult.asyncValue = transformer(res.asyncValue);
+            id value = res.asyncValue;
+            if(transformBlock) {
+                if(onMainThread) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        returnedResult.asyncValue = transformBlock(value);
+                    });
+                } else {
+                    returnedResult.asyncValue = transformBlock(value);
+                }
+            } else if(transformFunction) {
+                if(onMainThread) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        returnedResult.asyncValue = transformFunction(value);
+                    });
+                } else {
+                    returnedResult.asyncValue = transformFunction(value);
+                }
+            } else {
+                returnedResult.asyncValue = value;
+            }
         } else {
             returnedResult.asyncError = res.asyncError;
         }
@@ -302,17 +333,22 @@ id<AsyncResult> asyncTransform(id<AsyncResult> result, id(^transformer)(id))
     return returnedResult;
 }
 
+id<AsyncResult> asyncTransform(id<AsyncResult> result, id(^transformer)(id))
+{
+    return asyncTransformInternal(result, transformer, NULL, NO);
+}
+
+id<AsyncResult> asyncTransformOnMainThread(id<AsyncResult> result, id(^transformer)(id))
+{
+    return asyncTransformInternal(result, transformer, NULL, YES);
+}
+
 id<AsyncResult> asyncTransformUsingFunction(id<AsyncResult> result, id (*transformer)(id value))
 {
-    AsyncResult* returnedResult = [[AsyncResult alloc] init];
+    return asyncTransformInternal(result, nil, transformer, NO);
+}
 
-    asyncWait(result, ^(id<AsyncResult> res) {
-        if(res.asyncState == AsyncResultStateSuccess) {
-            returnedResult.asyncValue = transformer(res.asyncValue);
-        } else {
-            returnedResult.asyncError = res.asyncError;
-        }
-    });
-
-    return returnedResult;
+id<AsyncResult> asyncTransformOnMainThreadUsingFunction(id<AsyncResult> result, id (*transformer)(id value))
+{
+    return asyncTransformInternal(result, nil, transformer, YES);
 }

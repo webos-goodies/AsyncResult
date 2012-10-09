@@ -90,7 +90,7 @@ describe(@"NSURLConnection", ^{
             NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:request];
             asyncWait(connection, handler.block);
 
-            [[expectFutureValue(handler) shouldEventuallyBeforeTimingOutAfter(2.0)] beCalled];
+            [[expectFutureValue(handler) shouldEventuallyBeforeTimingOutAfter(3.0)] beCalled];
 
             HandlerMock*       lastCall = handler.lastCall;
             NSDictionary*      value    = lastCall.value;
@@ -137,7 +137,7 @@ describe(@"NSURLConnection", ^{
             NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:request];
             id<AsyncResult>  result     = connection.asyncResponseText;
             asyncWait(result, handler.block);
-            [[expectFutureValue(handler) shouldEventually] beCalledWithValue:@"Hello World!" onMainThread:YES];
+            [[expectFutureValue(handler) shouldEventuallyBeforeTimingOutAfter(3.0)] beCalledWithValue:@"Hello World!" onMainThread:YES];
             [[theValue(connection.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
         });
 
