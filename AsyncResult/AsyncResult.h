@@ -17,6 +17,7 @@ typedef enum _AsyncResultState {
 @protocol AsyncResult <NSObject>
 @property (nonatomic, readonly) id asyncValue;
 @property (nonatomic, readonly) id asyncError;
+@property (nonatomic, readonly) NSDictionary* asyncMetadata;
 @property (nonatomic, readonly) NSInteger asyncState;
 @property (nonatomic, readonly) BOOL asyncIsCanceled;
 - (BOOL)asyncCancel;
@@ -29,6 +30,8 @@ typedef enum _AsyncResultState {
 @interface AsyncResult : NSObject<AsyncResult>
 @property (nonatomic) id asyncValue;
 @property (nonatomic) id asyncError;
+- (void)setAsyncValue:(id)value withMetadata:(NSDictionary*)metadata;
+- (void)setAsyncError:(id)error withMetadata:(NSDictionary*)metadata;
 @end
 
 extern void asyncWait(id<AsyncResult> result, void(^handler)(id<AsyncResult> result));
@@ -43,7 +46,7 @@ extern id<AsyncResult> asyncChainUsingFunction(id<AsyncResult> result, id<AsyncR
 extern id<AsyncResult> asyncChainOnMainThreadUsingFunction(id<AsyncResult> result, id<AsyncResult>(*actionCallback)(id<AsyncResult> result));
 extern id<AsyncResult> asyncCombine(NSArray* results);
 extern id<AsyncResult> asyncCombineSuccess(NSArray* results);
-extern id<AsyncResult> asyncTransform(id<AsyncResult> result, id(^transformer)(id value));
-extern id<AsyncResult> asyncTransformOnMainThread(id<AsyncResult> result, id(^transformer)(id value));
-extern id<AsyncResult> asyncTransformUsingFunction(id<AsyncResult> result, id (*transformer)(id value));
-extern id<AsyncResult> asyncTransformOnMainThreadUsingFunction(id<AsyncResult> result, id (*transformer)(id value));
+extern id<AsyncResult> asyncTransform(id<AsyncResult> result, id(^transformer)(id value, NSDictionary* metadata));
+extern id<AsyncResult> asyncTransformOnMainThread(id<AsyncResult> result, id(^transformer)(id value, NSDictionary* metadata));
+extern id<AsyncResult> asyncTransformUsingFunction(id<AsyncResult> result, id (*transformer)(id value, NSDictionary* metadata));
+extern id<AsyncResult> asyncTransformOnMainThreadUsingFunction(id<AsyncResult> result, id (*transformer)(id value, NSDictionary* metadata));

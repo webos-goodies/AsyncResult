@@ -16,11 +16,11 @@
     AsyncResult* result = [[AsyncResult alloc] init];
     [self requestAccessToAccountsWithType:accountType withCompletionHandler:^(BOOL granted, NSError *error) {
         if(error) {
-            result.asyncError = @{ @"accountStore":self, @"error":error };
+            [result setAsyncError:error withMetadata:@{ @"accountStore":self }];
         } else if(granted) {
-            result.asyncValue = self;
+            [result setAsyncValue:self withMetadata:@{ @"accountStore":self }];
         } else {
-            result.asyncError = @{ @"accountStore":self };
+            [result setAsyncError:nil withMetadata:@{ @"accountStore":self }];
         }
     }];
     return result;
@@ -32,11 +32,11 @@
     AsyncResult* result = [[AsyncResult alloc] init];
     [self requestAccessToAccountsWithType:accountType options:options completion:^(BOOL granted, NSError *error) {
         if(error) {
-            result.asyncError = @{ @"accountStore":self, @"error":error };
+            [result setAsyncError:error withMetadata:@{ @"accountStore":self }];
         } else if(granted) {
-            result.asyncValue = self;
+            [result setAsyncValue:self withMetadata:@{ @"accountStore":self }];
         } else {
-            result.asyncError = @{ @"accountStore":self };
+            [result setAsyncError:nil withMetadata:@{ @"accountStore":self }];
         }
     }];
     return result;
@@ -46,12 +46,17 @@
 {
     AsyncResult* result = [[AsyncResult alloc] init];
     [self renewCredentialsForAccount:account completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
+        NSDictionary* metadata = @{
+            @"accountStore": self,
+            @"account":      account,
+            @"renewResult":  [[NSNumber alloc] initWithInteger:renewResult]
+        };
         if(error) {
-            result.asyncError = @{ @"accountStore":self, @"account":account, @"renewResult":[[NSNumber alloc] initWithInteger:renewResult], @"error":error };
+            [result setAsyncError:error withMetadata:metadata];
         } else if(renewResult == ACAccountCredentialRenewResultRenewed) {
-            result.asyncValue = account;
+            [result setAsyncValue:account withMetadata:metadata];
         } else {
-            result.asyncError = @{ @"accountStore":self, @"account":account, @"renewResult":[[NSNumber alloc] initWithInteger:renewResult] };
+            [result setAsyncError:nil withMetadata:metadata];
         }
     }];
     return result;
@@ -61,12 +66,13 @@
 {
     AsyncResult* result = [[AsyncResult alloc] init];
     [self removeAccount:account withCompletionHandler:^(BOOL success, NSError *error) {
+        NSDictionary* metadata = @{ @"accountStore":self, @"account":account };
         if(error) {
-            result.asyncError = @{ @"accountStore":self, @"account":account, @"error":error };
+            [result setAsyncError:error withMetadata:metadata];
         } else if(success) {
-            result.asyncValue = account;
+            [result setAsyncValue:account withMetadata:metadata];
         } else {
-            result.asyncError = @{ @"accountStore":self, @"account":account };
+            [result setAsyncError:nil withMetadata:metadata];
         }
     }];
     return result;

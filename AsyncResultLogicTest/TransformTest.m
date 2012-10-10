@@ -4,7 +4,7 @@
 static NSUInteger callCount = 0;
 static id callValue = nil;
 static BOOL callOnMainThread = NO;
-static id multiplyTransformer(NSNumber* result) {
+static id multiplyTransformer(NSNumber* result, NSDictionary* metadata) {
     callCount += 1;
     callValue = result;
     callOnMainThread = [NSThread isMainThread];
@@ -50,9 +50,10 @@ describe(@"asyncTransform", ^{
             asyncWait(transformedResult, resultCallback.block);
 
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
-            result.asyncValue = [NSNumber numberWithInteger:1];
+            [result setAsyncValue:@1 withMetadata:@{ @"test":@"test" }];
             [[multiplyResult should] beCalledWithValue:[NSNumber numberWithInteger:1] onMainThread:YES];
             [[resultCallback should] beCalledWithValue:[NSNumber numberWithInteger:2] result:transformedResult onMainThread:YES];
+            [[resultCallback.lastCall.metadata should] equal:@{ @"test":@"test" }];
         });
 
         it(@"should perform asynchronously on success", ^{

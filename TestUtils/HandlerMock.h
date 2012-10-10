@@ -16,11 +16,12 @@
 @property (nonatomic, readonly) void (^block)(id<AsyncResult> result);
 @property (nonatomic, readonly) void (^blockWithValue)(id value, id<AsyncResult> result);
 @property (nonatomic, readonly) id<AsyncResult> (^blockForChain)(id<AsyncResult> result);
-@property (nonatomic, readonly) id (^blockForTransform)(id value);
+@property (nonatomic, readonly) id (^blockForTransform)(id value, NSDictionary* metadata);
 @property (nonatomic, readonly) NSInteger callCount;
 @property (nonatomic, readonly) NSArray* calls;
 @property (nonatomic, readonly) HandlerMock* lastCall;
 @property (nonatomic, readonly) id value;
+@property (nonatomic, readonly) NSDictionary* metadata;
 @property (nonatomic, readonly) id<AsyncResult> result;
 @property (nonatomic, readonly) BOOL onMainThread;
 

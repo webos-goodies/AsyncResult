@@ -64,7 +64,7 @@ static NSIndexSet* indexSetFromArray(NSArray* array)
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    self.asyncValue = @{ @"response":_response, @"body":_body };
+    [self setAsyncValue:_body withMetadata:@{ @"response":_response, @"body":_body }];
     void(^block)(NSURLConnection*) = connection.delegateDidFinishLoading;
     if(block){ block(connection); }
 }
@@ -83,7 +83,7 @@ static NSIndexSet* indexSetFromArray(NSArray* array)
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    self.asyncError = @{ @"error":error };
+    [self setAsyncError:error withMetadata:nil];
 }
 
 @end
@@ -121,13 +121,15 @@ static NSIndexSet* indexSetFromArray(NSArray* array)
     return asyncChain(self, ^id<AsyncResult>(id<AsyncResult> result) {
 
         AsyncResult* secondResult = [[AsyncResult alloc] init];
-        NSHTTPURLResponse* response = [result.asyncValue objectForKey:@"response"];
+        NSHTTPURLResponse* response = [result.asyncMetadata objectForKey:@"response"];
         if([response respondsToSelector:@selector(statusCode)] &&
-           [statusSet containsIndex:response.statusCode])
+           [statusSet containsIndex:response.statusCode] &&
+           [result.asyncValue isKindOfClass:[NSData class]])
         {
-            secondResult.asyncValue = [[NSString alloc] initWithData:[result.asyncValue objectForKey:@"body"] encoding:NSUTF8StringEncoding];
+            NSString* body = [[NSString alloc] initWithData:result.asyncValue encoding:NSUTF8StringEncoding];
+            [secondResult setAsyncValue:body withMetadata:result.asyncMetadata];
         } else {
-            secondResult.asyncError = result.asyncValue;
+            [secondResult setAsyncError:nil withMetadata:result.asyncMetadata];
         }
 
         return secondResult;
@@ -151,23 +153,20 @@ static NSIndexSet* indexSetFromArray(NSArray* array)
 
         AsyncResult* secondResult = [[AsyncResult alloc] init];
 
-        NSHTTPURLResponse* response = [result.asyncValue objectForKey:@"response"];
-        id body = [result.asyncValue objectForKey:@"body"];
+        NSHTTPURLResponse* response = [result.asyncMetadata objectForKey:@"response"];
         if([response respondsToSelector:@selector(statusCode)] &&
-           [body isKindOfClass:[NSData class]] &&
-           [statusSet containsIndex:response.statusCode])
+           [statusSet containsIndex:response.statusCode] &&
+           [result.asyncValue isKindOfClass:[NSData class]])
         {
             NSError* error;
-            id json = [NSJSONSerialization JSONObjectWithData:body options:0 error:&error];
+            id json = [NSJSONSerialization JSONObjectWithData:result.asyncValue options:0 error:&error];
             if(error) {
-                NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:result.asyncValue];
-                [dict setObject:error forKey:@"error"];
-                secondResult.asyncError = dict;
+                [secondResult setAsyncError:error withMetadata:result.asyncMetadata];
             } else {
-                secondResult.asyncValue = json;
+                [secondResult setAsyncValue:json withMetadata:result.asyncMetadata];
             }
         } else {
-            secondResult.asyncError = result.asyncValue;
+            [secondResult setAsyncError:nil withMetadata:result.asyncMetadata];
         }
 
         return secondResult;
@@ -192,6 +191,11 @@ static NSIndexSet* indexSetFromArray(NSArray* array)
 - (id)asyncError
 {
     return [[AsyncResultInjector getValueForKey:@"result" from:self] asyncError];
+}
+
+- (NSDictionary*)asyncMetadata
+{
+    return [[AsyncResultInjector getValueForKey:@"result" from:self] asyncMetadata];
 }
 
 - (NSInteger)asyncState

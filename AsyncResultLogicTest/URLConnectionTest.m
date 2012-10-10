@@ -93,12 +93,12 @@ describe(@"NSURLConnection", ^{
             [[expectFutureValue(handler) shouldEventuallyBeforeTimingOutAfter(3.0)] beCalled];
 
             HandlerMock*       lastCall = handler.lastCall;
-            NSDictionary*      value    = lastCall.value;
-            NSHTTPURLResponse* response = [value objectForKey:@"response"];
+            NSHTTPURLResponse* response = [lastCall.metadata objectForKey:@"response"];
             [[theValue(lastCall.result.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
             [[response should] isKindOfClass:[NSHTTPURLResponse class]];
             [[theValue(response.statusCode) should] equal:theValue(200)];
-            [[[[NSString alloc] initWithData:[value objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"Hello World!"];
+            [[[[NSString alloc] initWithData:lastCall.value encoding:NSUTF8StringEncoding] should] equal:@"Hello World!"];
+            [[[[NSString alloc] initWithData:[lastCall.metadata objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"Hello World!"];
             [[theValue([connection asyncCancel]) should] beNo];
         });
 
@@ -121,7 +121,7 @@ describe(@"NSURLConnection", ^{
             [[expectFutureValue(handler) shouldEventually] beCalled];
 
             [[theValue(connection.asyncState) should] equal:theValue(AsyncResultStateError)];
-            NSError* error = [connection.asyncError objectForKey:@"error"];
+            NSError* error = connection.asyncError;
             [[error should] beKindOfClass:[NSError class]];
             [[error.domain should] equal:requestError.domain];
             [[theValue(error.code) should] equal:theValue(requestError.code)];
@@ -137,7 +137,14 @@ describe(@"NSURLConnection", ^{
             NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:request];
             id<AsyncResult>  result     = connection.asyncResponseText;
             asyncWait(result, handler.block);
+
             [[expectFutureValue(handler) shouldEventuallyBeforeTimingOutAfter(3.0)] beCalledWithValue:@"Hello World!" onMainThread:YES];
+
+            HandlerMock*       lastCall = handler.lastCall;
+            NSHTTPURLResponse* response = [lastCall.metadata objectForKey:@"response"];
+            [[response should] isKindOfClass:[NSHTTPURLResponse class]];
+            [[theValue(response.statusCode) should] equal:theValue(200)];
+            [[[[NSString alloc] initWithData:[lastCall.metadata objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"Hello World!"];
             [[theValue(connection.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
         });
 
@@ -159,12 +166,11 @@ describe(@"NSURLConnection", ^{
             [[expectFutureValue(handler) shouldEventually] beCalled];
 
             HandlerMock*       lastCall = handler.lastCall;
-            NSDictionary*      value    = lastCall.value;
-            NSHTTPURLResponse* response = [value objectForKey:@"response"];
+            NSHTTPURLResponse* response = [lastCall.metadata objectForKey:@"response"];
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
             [[response should] isKindOfClass:[NSHTTPURLResponse class]];
             [[theValue(response.statusCode) should] equal:theValue(202)];
-            [[[[NSString alloc] initWithData:[value objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"Hello World!"];
+            [[[[NSString alloc] initWithData:[lastCall.metadata objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"Hello World!"];
         });
 
         it(@"should fail with unspecified status code", ^{
@@ -176,12 +182,11 @@ describe(@"NSURLConnection", ^{
             [[expectFutureValue(handler) shouldEventually] beCalled];
 
             HandlerMock*       lastCall = handler.lastCall;
-            NSDictionary*      value    = lastCall.value;
-            NSHTTPURLResponse* response = [value objectForKey:@"response"];
+            NSHTTPURLResponse* response = [lastCall.metadata objectForKey:@"response"];
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
             [[response should] isKindOfClass:[NSHTTPURLResponse class]];
             [[theValue(response.statusCode) should] equal:theValue(200)];
-            [[[[NSString alloc] initWithData:[value objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"Hello World!"];
+            [[[[NSString alloc] initWithData:[lastCall.metadata objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"Hello World!"];
         });
 
         it(@"should be canceled when the connection is canceled", ^{
@@ -205,7 +210,7 @@ describe(@"NSURLConnection", ^{
             [[expectFutureValue(handler) shouldEventually] beCalled];
 
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
-            NSError* error = [result.asyncError objectForKey:@"error"];
+            NSError* error = result.asyncError;
             [[error should] beKindOfClass:[NSError class]];
             [[error.domain should] equal:error.domain];
             [[theValue(error.code) should] equal:theValue(error.code)];
@@ -221,7 +226,14 @@ describe(@"NSURLConnection", ^{
             NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:request];
             id<AsyncResult>  result     = connection.asyncResponseJson;
             asyncWait(result, handler.block);
+
             [[expectFutureValue(handler) shouldEventually] beCalledWithValue:@[@"Hello World!"] onMainThread:YES];
+
+            HandlerMock*       lastCall = handler.lastCall;
+            NSHTTPURLResponse* response = [lastCall.metadata objectForKey:@"response"];
+            [[response should] isKindOfClass:[NSHTTPURLResponse class]];
+            [[theValue(response.statusCode) should] equal:theValue(200)];
+            [[[[NSString alloc] initWithData:[lastCall.metadata objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"[\"Hello World!\"]"];
             [[theValue(connection.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
         });
 
@@ -244,12 +256,11 @@ describe(@"NSURLConnection", ^{
             [[expectFutureValue(handler) shouldEventually] beCalled];
 
             HandlerMock*       lastCall = handler.lastCall;
-            NSDictionary*      value    = lastCall.value;
-            NSHTTPURLResponse* response = [value objectForKey:@"response"];
+            NSHTTPURLResponse* response = [lastCall.metadata objectForKey:@"response"];
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
             [[response should] isKindOfClass:[NSHTTPURLResponse class]];
             [[theValue(response.statusCode) should] equal:theValue(202)];
-            [[[[NSString alloc] initWithData:[value objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"[\"Hello World!\"]"];
+            [[[[NSString alloc] initWithData:[lastCall.metadata objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"[\"Hello World!\"]"];
         });
 
         it(@"should fail with unspecified status code", ^{
@@ -260,13 +271,12 @@ describe(@"NSURLConnection", ^{
 
             [[expectFutureValue(handler) shouldEventually] beCalled];
 
-            HandlerMock*       lastCall = handler.lastCall;
-            NSDictionary*      value    = lastCall.value;
-            NSHTTPURLResponse* response = [value objectForKey:@"response"];
+            HandlerMock*        lastCall = handler.lastCall;
+             NSHTTPURLResponse* response = [lastCall.metadata objectForKey:@"response"];
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
             [[response should] isKindOfClass:[NSHTTPURLResponse class]];
             [[theValue(response.statusCode) should] equal:theValue(200)];
-            [[[[NSString alloc] initWithData:[value objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"[\"Hello World!\"]"];
+            [[[[NSString alloc] initWithData:[lastCall.metadata objectForKey:@"body"] encoding:NSUTF8StringEncoding] should] equal:@"[\"Hello World!\"]"];
         });
 
         it(@"should be canceled when the connection is canceled", ^{
@@ -290,7 +300,7 @@ describe(@"NSURLConnection", ^{
             [[expectFutureValue(handler) shouldEventually] beCalled];
 
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
-            NSError* error = [result.asyncError objectForKey:@"error"];
+            NSError* error = result.asyncError;
             [[error should] beKindOfClass:[NSError class]];
             [[error.domain should] equal:error.domain];
             [[theValue(error.code) should] equal:theValue(error.code)];

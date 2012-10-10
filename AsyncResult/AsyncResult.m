@@ -21,30 +21,33 @@
     NSMutableArray* _handlers;
 }
 
-@synthesize asyncValue = _asyncValue;
-@synthesize asyncError = _asyncError;
-@synthesize asyncState = _asyncState;
+@synthesize asyncValue    = _asyncValue;
+@synthesize asyncError    = _asyncError;
+@synthesize asyncMetadata = _asyncMetadata;
+@synthesize asyncState    = _asyncState;
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        _asyncState = AsyncResultStatePending;
-        _asyncValue = nil;
-        _asyncError = nil;
-        _handlers   = [[NSMutableArray alloc] initWithCapacity:4];
+        _asyncState    = AsyncResultStatePending;
+        _asyncValue    = nil;
+        _asyncError    = nil;
+        _asyncMetadata = nil;
+        _handlers      = [[NSMutableArray alloc] initWithCapacity:4];
     }
     return self;
 }
 
-- (void)setAsyncValue:(id)value
+- (void)setAsyncValue:(id)value withMetadata:(NSDictionary *)metadata
 {
     BOOL shouldCall = NO;
     @synchronized(self) {
         if([self isPending]) {
-            _asyncValue = value;
-            _asyncState = AsyncResultStateSuccess;
-            shouldCall  = YES;
+            _asyncValue    = value;
+            _asyncMetadata = [metadata isMemberOfClass:[NSDictionary class]] ? metadata : [metadata copy];
+            _asyncState    = AsyncResultStateSuccess;
+            shouldCall     = YES;
         } else if(!self.asyncIsCanceled) {
             NSAssert(NO, @"Multiple attempts to set the state of this Result");
         }
@@ -54,14 +57,20 @@
     }
 }
 
-- (void)setAsyncError:(id)error
+- (void)setAsyncValue:(id)asyncValue
+{
+    [self setAsyncValue:asyncValue withMetadata:nil];
+}
+
+- (void)setAsyncError:(id)error withMetadata:(NSDictionary *)metadata
 {
     BOOL shouldCall = NO;
     @synchronized(self) {
         if([self isPending]) {
-            _asyncError = error;
-            _asyncState = AsyncResultStateError;
-            shouldCall  = YES;
+            _asyncError    = error;
+            _asyncMetadata = [metadata isMemberOfClass:[NSDictionary class]] ? metadata : [metadata copy];
+            _asyncState    = AsyncResultStateError;
+            shouldCall     = YES;
         } else if(!self.asyncIsCanceled) {
             NSAssert(NO, @"Multiple attempts to set the state of this Result");
         }
@@ -69,6 +78,11 @@
     if(shouldCall) {
         [self callHandlers];
     }
+}
+
+- (void)setAsyncError:(id)asyncValue
+{
+    [self setAsyncError:asyncValue withMetadata:nil];
 }
 
 - (BOOL)asyncIsCanceled
@@ -207,14 +221,14 @@ asyncChainInternal(id<AsyncResult> result,
 
                 // The dependent action completed. Set the returned result based on the dependent action's outcome.
                 if(dependentResult.asyncState == AsyncResultStateSuccess) {
-                    returnedResult.asyncValue = dependentResult.asyncValue;
+                    [returnedResult setAsyncValue:dependentResult.asyncValue withMetadata:dependentResult.asyncMetadata];
                 } else {
-                    returnedResult.asyncError = dependentResult.asyncError;
+                    [returnedResult setAsyncError:dependentResult.asyncError withMetadata:dependentResult.asyncMetadata];
                 }
             });
         } else {
             // First action failed, the returned result should also fail.
-            returnedResult.asyncError = result.asyncError;
+            [returnedResult setAsyncError:result.asyncError withMetadata:result.asyncMetadata];
         }
     });
 
@@ -297,58 +311,59 @@ id<AsyncResult> asyncCombineSuccess(NSArray* results)
 #pragma mark - asyncTransform and variants
 
 static id<AsyncResult> asyncTransformInternal(id<AsyncResult> result,
-                                              id(^transformBlock)(id value),
-                                              id(*transformFunction)(id value),
+                                              id(^transformBlock)(id value, NSDictionary* metadata),
+                                              id(*transformFunction)(id value, NSDictionary* metadata),
                                               BOOL onMainThread)
 {
     AsyncResult* returnedResult = [[AsyncResult alloc] init];
 
     asyncWait(result, ^(id<AsyncResult> res) {
         if(res.asyncState == AsyncResultStateSuccess) {
-            id value = res.asyncValue;
+            id            value    = res.asyncValue;
+            NSDictionary* metadata = res.asyncMetadata;
             if(transformBlock) {
                 if(onMainThread) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        returnedResult.asyncValue = transformBlock(value);
+                        [returnedResult setAsyncValue:transformBlock(value, metadata) withMetadata:metadata];
                     });
                 } else {
-                    returnedResult.asyncValue = transformBlock(value);
+                    [returnedResult setAsyncValue:transformBlock(value, metadata) withMetadata:metadata];
                 }
             } else if(transformFunction) {
                 if(onMainThread) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        returnedResult.asyncValue = transformFunction(value);
+                        [returnedResult setAsyncValue:transformFunction(value, metadata) withMetadata:metadata];
                     });
                 } else {
-                    returnedResult.asyncValue = transformFunction(value);
+                    [returnedResult setAsyncValue:transformFunction(value, metadata) withMetadata:metadata];
                 }
             } else {
-                returnedResult.asyncValue = value;
+                [returnedResult setAsyncValue:value withMetadata:metadata];
             }
         } else {
-            returnedResult.asyncError = res.asyncError;
+            [returnedResult setAsyncError:res.asyncError withMetadata:res.asyncMetadata];
         }
     });
 
     return returnedResult;
 }
 
-id<AsyncResult> asyncTransform(id<AsyncResult> result, id(^transformer)(id))
+id<AsyncResult> asyncTransform(id<AsyncResult> result, id(^transformer)(id, NSDictionary*))
 {
     return asyncTransformInternal(result, transformer, NULL, NO);
 }
 
-id<AsyncResult> asyncTransformOnMainThread(id<AsyncResult> result, id(^transformer)(id))
+id<AsyncResult> asyncTransformOnMainThread(id<AsyncResult> result, id(^transformer)(id, NSDictionary*))
 {
     return asyncTransformInternal(result, transformer, NULL, YES);
 }
 
-id<AsyncResult> asyncTransformUsingFunction(id<AsyncResult> result, id (*transformer)(id value))
+id<AsyncResult> asyncTransformUsingFunction(id<AsyncResult> result, id (*transformer)(id, NSDictionary*))
 {
     return asyncTransformInternal(result, nil, transformer, NO);
 }
 
-id<AsyncResult> asyncTransformOnMainThreadUsingFunction(id<AsyncResult> result, id (*transformer)(id value))
+id<AsyncResult> asyncTransformOnMainThreadUsingFunction(id<AsyncResult> result, id (*transformer)(id, NSDictionary*))
 {
     return asyncTransformInternal(result, nil, transformer, YES);
 }

@@ -18,12 +18,15 @@
 @property (nonatomic) void(^delegateDidFinishLoading)(NSURLConnection* connection);
 @property (nonatomic) NSURLRequest*(^delegateWillSendRequestRedirectResponse)(NSURLConnection* connection, NSURLRequest* request, NSURLResponse* response);
 @property (nonatomic) NSCachedURLResponse*(^delegateWillCacheResponse)(NSURLConnection* connection, NSCachedURLResponse* cachedResponse);
-@property (nonatomic, readonly) id<AsyncResult> asyncResponseText;
-@property (nonatomic, readonly) id<AsyncResult> asyncResponseJson;
 
+// Initialization
 + (NSURLConnection*)connectionWithRequest:(NSURLRequest*)request;
 - (id)initWithRequest:(NSURLRequest*)request;
 - (id)initWithRequest:(NSURLRequest*)request startImmediately:(BOOL)startImmediately;
+
+// Retrieve a response body in specific format.
+@property (nonatomic, readonly) id<AsyncResult> asyncResponseText;
+@property (nonatomic, readonly) id<AsyncResult> asyncResponseJson;
 - (id<AsyncResult>)asyncResponseTextOnStatusSet:(NSIndexSet*)statusSet;
 - (id<AsyncResult>)asyncResponseTextOnStatuses:(NSArray*)statuses;
 - (id<AsyncResult>)asyncResponseJsonOnStatusSet:(NSIndexSet*)statusSet;

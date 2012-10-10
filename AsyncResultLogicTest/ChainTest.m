@@ -22,10 +22,15 @@ SPEC_BEGIN(ChainSpec)
 describe(@"Chain", ^{
     registerMatchers(@"AR");
 
-    __block AsyncResult* givenResult;
-    __block AsyncResult* dependentResult;
-    __block HandlerMock* counter;
-    __block HandlerMock* actionCallback;
+    __block AsyncResult*  givenResult;
+    __block AsyncResult*  dependentResult;
+    __block HandlerMock*  counter;
+    __block HandlerMock*  actionCallback;
+    __block NSDictionary* metadata;
+
+    beforeAll(^{
+        metadata = @{ @"test":@"test" };
+    });
 
     beforeEach(^{
         givenResult     = [[AsyncResult alloc] init];
@@ -51,6 +56,11 @@ describe(@"Chain", ^{
         funcOnMainThread = NO;
     });
 
+    afterAll(^{
+        metadata = nil;
+    });
+
+
 #pragma mark - Synchronous tests for asyncChain
 
     context(@"UsingBlock", ^{
@@ -58,32 +68,37 @@ describe(@"Chain", ^{
             AsyncResult* finalResult = asyncChain(givenResult, actionCallback.blockForChain);
             asyncWaitSuccess(finalResult, counter.blockWithValue);
 
-            givenResult.asyncValue     = [[NSNumber alloc] initWithInteger:1];
-            dependentResult.asyncValue = [[NSNumber alloc] initWithInteger:2];
+            [givenResult setAsyncValue:@1 withMetadata:metadata];
+            [dependentResult setAsyncValue:@2 withMetadata:givenResult.asyncMetadata];
 
-            [[actionCallback should] beCalledWithValue:[[NSNumber alloc] initWithInteger:1] result:givenResult onMainThread:YES];
-            [[counter should] beCalledWithValue:[[NSNumber alloc] initWithInteger:2] result:finalResult onMainThread:YES];
+            [[actionCallback should] beCalledWithValue:@1 result:givenResult onMainThread:YES];
+            [[actionCallback.lastCall.metadata should] equal:metadata];
+            [[counter should] beCalledWithValue:@2 result:finalResult onMainThread:YES];
+            [[counter.lastCall.metadata should] equal:metadata];
         });
 
         it(@"should not chain when the first result fail", ^{
             AsyncResult* finalResult = asyncChain(givenResult, actionCallback.blockForChain);
             asyncWait(finalResult, counter.block);
 
-            givenResult.asyncError = [[NSNumber alloc] initWithInteger:4];
+            [givenResult setAsyncError:@4 withMetadata:metadata];
 
             [[actionCallback shouldNot] beCalled];
-            [[counter should] beCalledWithError:[[NSNumber alloc] initWithInteger:4] result:finalResult onMainThread:YES];
+            [[counter should] beCalledWithError:@4 result:finalResult onMainThread:YES];
+            [[counter.lastCall.metadata should] equal:metadata];
         });
 
         it(@"should get an error result when the second result fail", ^{
             AsyncResult* finalResult = asyncChain(givenResult, actionCallback.blockForChain);
             asyncWait(finalResult, counter.block);
 
-            givenResult.asyncValue = [[NSNumber alloc] initWithInteger:1];
-            dependentResult.asyncError = [[NSNumber alloc] initWithInteger:5];
+            [givenResult setAsyncValue:@1 withMetadata:metadata];
+            [dependentResult setAsyncError:@5 withMetadata:givenResult.asyncMetadata];
 
-            [[actionCallback should] beCalledWithValue:[[NSNumber alloc] initWithInteger:1] result:givenResult onMainThread:YES];
-            [[counter should] beCalledWithError:[[NSNumber alloc] initWithInteger:5] result:finalResult onMainThread:YES];
+            [[actionCallback should] beCalledWithValue:@1 result:givenResult onMainThread:YES];
+            [[actionCallback.lastCall.metadata should] equal:metadata];
+            [[counter should] beCalledWithError:@5 result:finalResult onMainThread:YES];
+            [[counter.lastCall.metadata should] equal:metadata];
         });
 
 

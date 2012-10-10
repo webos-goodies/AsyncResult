@@ -243,6 +243,80 @@ describe(@"AsyncResult", ^{
         result = nil;
         [[expectFutureValue(weakPtr) shouldEventually] beNil];
     });
+
+    it(@"should keep NSDictionary metadata identically on success", ^{
+        [result asyncWait:resultCallback.block];
+
+        [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
+        [[theValue(resultCallback.callCount) should] equal:theValue(0)];
+
+        NSDictionary* metadata = @{ @"string":@"2" };
+        [result setAsyncValue:@2 withMetadata:metadata];
+
+        [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
+        [[theValue(resultCallback.callCount) should] equal:theValue(1)];
+
+        HandlerMock* lastCall = resultCallback.lastCall;
+        [[lastCall.value should] equal:@2];
+        [[lastCall.metadata should] beIdenticalTo:metadata];
+        [[(id)lastCall.result should] beIdenticalTo:result];
+    });
+
+    it(@"should copy NSMutableDictionary metadata on success", ^{
+        [result asyncWait:resultCallback.block];
+
+        [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
+        [[theValue(resultCallback.callCount) should] equal:theValue(0)];
+
+        NSMutableDictionary* metadata = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@2, @"string", nil];
+        [result setAsyncValue:@2 withMetadata:metadata];
+
+        [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
+        [[theValue(resultCallback.callCount) should] equal:theValue(1)];
+
+        HandlerMock* lastCall = resultCallback.lastCall;
+        [[lastCall.value should] equal:@2];
+        [[lastCall.metadata should] equal:metadata];
+        [[lastCall.metadata shouldNot] beIdenticalTo:metadata];
+        [[(id)lastCall.result should] beIdenticalTo:result];
+    });
+
+    it(@"should keep NSDictionary metadata identically on error", ^{
+        [result asyncWait:resultCallback.block];
+
+        [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
+        [[theValue(resultCallback.callCount) should] equal:theValue(0)];
+
+        NSDictionary* metadata = @{ @"string":@"2" };
+        [result setAsyncError:@2 withMetadata:metadata];
+
+        [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
+        [[theValue(resultCallback.callCount) should] equal:theValue(1)];
+
+        HandlerMock* lastCall = resultCallback.lastCall;
+        [[lastCall.value should] equal:@2];
+        [[lastCall.metadata should] beIdenticalTo:metadata];
+        [[(id)lastCall.result should] beIdenticalTo:result];
+    });
+
+    it(@"should copy NSMutableDictionary metadata on error", ^{
+        [result asyncWait:resultCallback.block];
+
+        [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
+        [[theValue(resultCallback.callCount) should] equal:theValue(0)];
+
+        NSMutableDictionary* metadata = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@2, @"string", nil];
+        [result setAsyncError:@2 withMetadata:metadata];
+
+        [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
+        [[theValue(resultCallback.callCount) should] equal:theValue(1)];
+
+        HandlerMock* lastCall = resultCallback.lastCall;
+        [[lastCall.value should] equal:@2];
+        [[lastCall.metadata should] equal:metadata];
+        [[lastCall.metadata shouldNot] beIdenticalTo:metadata];
+        [[(id)lastCall.result should] beIdenticalTo:result];
+    });
 });
 
 SPEC_END

@@ -77,15 +77,30 @@
     ACAccountStore* store   = [[ACAccountStore alloc] init];
     ACAccountType*  accType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     id<AsyncResult> result  = [store requestAccessToAccountsWithType:accType];
+
+    __weak ACAccountStore* wstore = store;
+
     asyncWaitSuccessOnMainThread(result, ^(ACAccountStore* value, id<AsyncResult> result) {
         if(value.accounts.count > 0) {
             self.labelOfTwitterName.text = ((ACAccount*)[value.accounts objectAtIndex:0]).username;
         } else {
             self.labelOfTwitterName.text = @"no account";
         }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(wstore ?
+                  @"ACAccountStore is still alive. it is possibly a memory leak." :
+                  @"ACAccountStore is dealloced.");
+        });
     });
     asyncWaitErrorOnMainThread(result, ^(id<AsyncResult> result) {
         self.labelOfTwitterName.text = @"error";
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(wstore ?
+                  @"ACAccountStore is still alive. it is possibly a memory leak." :
+                  @"ACAccountStore is dealloced.");
+        });
     });
 }
 @end

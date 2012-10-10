@@ -16,32 +16,35 @@
     id (^_block)(id result);
     NSMutableArray* _calls;
     id _value;
+    NSDictionary* _metadata;
     id<AsyncResult> _result;
     BOOL onMainThread;
 }
 
-@synthesize calls  = _calls;
-@synthesize value  = _value;
-@synthesize result = _result;
+@synthesize calls    = _calls;
+@synthesize value    = _value;
+@synthesize metadata = _metadata;
+@synthesize result   = _result;
 @synthesize onMainThread = _onMainThread;
 
 
-- (id)initWithValue:(id)value result:(id<AsyncResult>)result block:(id (^)(id result)) block
+- (id)initWithValue:(id)value metadata:(NSDictionary*)metadata result:(id<AsyncResult>)result block:(id (^)(id result)) block
 {
     self = [super init];
     if (self) {
-        _block  = block;
-        _calls  = nil;
-        _value  = value;
-        _result = result;
+        _block    = block;
+        _calls    = nil;
+        _value    = value;
+        _metadata = metadata;
+        _result   = result;
         _onMainThread = [NSThread isMainThread];
     }
     return self;
 }
 
-- (id)initWithValue:(id)value result:(id<AsyncResult>)result
+- (id)initWithValue:(id)value metadata:(NSDictionary*)metadata result:(id<AsyncResult>)result
 {
-    self = [self initWithValue:value result:result block:^id(id result) {
+    self = [self initWithValue:value metadata:metadata result:result block:^id(id result) {
         return nil;
     }];
     return self;
@@ -49,7 +52,7 @@
 
 - (id)init
 {
-    self = [self initWithValue:nil result:nil];
+    self = [self initWithValue:nil metadata:nil result:nil];
     if (self) {
         _calls = [[NSMutableArray alloc] init];
     }
@@ -58,7 +61,7 @@
 
 - (id)initWithBlock:(id (^)(id))block
 {
-    self = [self initWithValue:nil result:nil block:block];
+    self = [self initWithValue:nil metadata:nil result:nil block:block];
     if (self) {
         _calls = [[NSMutableArray alloc] init];
     }
@@ -71,10 +74,11 @@
             [item clear];
         }
     }
-    _block  = nil;
-    _calls  = nil;
-    _value  = nil;
-    _result = nil;
+    _block    = nil;
+    _calls    = nil;
+    _value    = nil;
+    _metadata = nil;
+    _result   = nil;
     _onMainThread = NO;
     return nil;
 }
@@ -93,7 +97,7 @@
         _block(result);
         @synchronized(self) {
             id value = result.asyncState == AsyncResultStateSuccess ? result.asyncValue : result.asyncError;
-            [_calls addObject:[[HandlerMock alloc] initWithValue:value result:result]];
+            [_calls addObject:[[HandlerMock alloc] initWithValue:value metadata:[result.asyncMetadata copy] result:result]];
         }
     };
 }
@@ -103,7 +107,7 @@
     return ^(id value, id<AsyncResult> result) {
         _block(result);
         @synchronized(self) {
-            [_calls addObject:[[HandlerMock alloc] initWithValue:value result:result]];
+            [_calls addObject:[[HandlerMock alloc] initWithValue:value metadata:[result.asyncMetadata copy] result:result]];
         }
     };
 }
@@ -114,18 +118,18 @@
         id<AsyncResult> secondResult = _block(result);
         @synchronized(self) {
             id value = result.asyncState == AsyncResultStateSuccess ? result.asyncValue : result.asyncError;
-            [_calls addObject:[[HandlerMock alloc] initWithValue:value result:result]];
+            [_calls addObject:[[HandlerMock alloc] initWithValue:value metadata:[result.asyncMetadata copy] result:result]];
         }
         return secondResult;
     };
 }
 
-- (id(^)(id value))blockForTransform
+- (id(^)(id value, NSDictionary* metadata))blockForTransform
 {
-    return ^id(id value) {
+    return ^id(id value, NSDictionary* metadata) {
         id transformedValue = _block(value);
         @synchronized(self) {
-            [_calls addObject:[[HandlerMock alloc] initWithValue:value result:nil]];
+            [_calls addObject:[[HandlerMock alloc] initWithValue:value metadata:[metadata copy] result:nil]];
         }
         return transformedValue;
     };
@@ -134,8 +138,8 @@
 - (NSString*)description
 {
     return [NSString stringWithFormat:
-            @"%@ (result:%@, value:%@, block:%@, onMainThread:%d, calls:%@",
-            [super description], _result, _value, _block, _onMainThread, _calls];
+            @"%@ (result:%@, value:%@, metadata:%@, block:%@, onMainThread:%d, calls:%@",
+            [super description], _result, _value, _metadata, _block, _onMainThread, _calls];
 }
 
 @end
@@ -166,7 +170,7 @@
         if(_result) {
             if(_state != AsyncResultStatePending) {
                 return (handler.result.asyncState == _state &&
-                        [handler.value isEqual:_value] &&
+                        ((handler.value == nil && _value == nil) || [handler.value isEqual:_value]) &&
                         [handler.result isEqual:_result] &&
                         handler.onMainThread == _onMainThread);
             } else {
@@ -174,7 +178,7 @@
                         handler.onMainThread == _onMainThread);
             }
         } else if(_state != AsyncResultStatePending) {
-            return ([handler.value isEqual:_value] &&
+            return (((handler.value == nil && _value == nil) || [handler.value isEqual:_value]) &&
                     handler.onMainThread == _onMainThread);
         } else {
             return YES;
