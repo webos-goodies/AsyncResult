@@ -3,14 +3,14 @@ AsyncResult
 
 AsyncResult is an Objective-C port of [goog.result], an asynchronous module of Google Closure Library. It provides an easy and consistent way to handle asynchronous operations.
 
-A function that initiates an asynchronous operation can return an AsyncResult object as a return value like a synchoronous operation. A caller can regist a handler block to retrieve the result value of the asynchoronous operation when it is resolved.
+A method or a function that initiates an asynchronous operation can return an AsyncResult object as a return value like a synchoronous operation. A caller can regist a handler block to retrieve the result value of the asynchoronous operation when it is resolved.
 
 Features
 --------
 
 Although AsyncResult is a variant of implementation of [Promise pattern], it has some original characteristics.
 
- * Objective-C friendly syntax. No method chaining :D
+ * Objective-C friendly syntax. No method chaining.
  * Defined as a protocol. You can integrate AsyncResult functionalities to your classes.
  * A value of an operation can be modified with asyncTransform.
  * Categories to add AsyncResult functionalities to exisiting cocoa claasses.
@@ -36,10 +36,15 @@ Then following these steps.
  * Add `$(SOURCE_ROOT)/AsyncResult/AsyncResult` into **User Header Search Paths**.
  * Add `-ObjC` into **Other Linker Flags**.
 
+Documentation
+-------------
+
+See the [Wiki pages] (https://github.com/webos-goodies/AsyncResult/wiki) .
+
 Examples
 --------
 
-With AsyncResult, An http request can be done as following.
+With AsyncResult, An http request and various response handlings can be done as following.
 
 ```objective-c
 #import "NSURLConnection+AsyncResult.h"
@@ -108,9 +113,9 @@ asyncWaitErrorOnMainThread(secondRequest, ^(id<AsyncResult> result) {
 
 Like NSURLConnection, AsyncResult categories are provided for these classes.
 
- * UIAlertView
- * UIActionSheet
- * ACAccountStore
+ * [UIAlertView] (https://github.com/webos-goodies/AsyncResult/wiki/UIAlertView-category)
+ * [UIActionSheet] (https://github.com/webos-goodies/AsyncResult/wiki/UIActionSheet-category)
+ * [ACAccountStore] (https://github.com/webos-goodies/AsyncResult/wiki/ACAccountStore-category)
 
 You can integrate AsyncResult functionalities into any class using category or subclassing.
 
