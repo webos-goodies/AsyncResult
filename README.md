@@ -29,7 +29,7 @@ Using in your projects
 
 The best way to get AsyncResult is by cloning the git repository: `git clone git://github.com/webos-goodies/AsyncResult.git`
 
-Then following these steps.
+Then follow these steps.
 
  * Bring in AsyncResult.xcodeproj into your workspace.
  * Add libAsyncResult.a into **Link Binary With Libraries**.
