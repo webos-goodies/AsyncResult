@@ -102,7 +102,7 @@
         // Call super class's asyncCancel to avoid duplicated call of dismissWithClickedButtonIndex:animated:.
         [super asyncCancel];
     } else {
-        self.asyncValue = [[NSNumber alloc] initWithInteger:buttonIndex];
+        [self setAsyncValue:[[NSNumber alloc] initWithInteger:buttonIndex] withMetadata:nil];
     }
 }
 

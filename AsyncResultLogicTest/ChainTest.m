@@ -124,14 +124,14 @@ describe(@"Chain", ^{
 
             NSNumber* value = [[NSNumber alloc] initWithInteger:1];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                givenResult.asyncValue = value;
+                [givenResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(actionCallback) shouldEventually] beCalledWithValue:value result:givenResult onMainThread:NO];
 
             value = [[NSNumber alloc] initWithInteger:2];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                dependentResult.asyncValue = value;
+                [dependentResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(counter) shouldEventually] beCalledWithValue:value result:finalResult onMainThread:NO];
@@ -143,7 +143,7 @@ describe(@"Chain", ^{
 
             NSNumber* error = [[NSNumber alloc] initWithInteger:6];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                givenResult.asyncError = error;
+                [givenResult setAsyncError:error withMetadata:nil];
             });
 
             [[expectFutureValue(counter) shouldEventually] beCalledWithError:error result:finalResult onMainThread:NO];
@@ -156,14 +156,14 @@ describe(@"Chain", ^{
 
             NSNumber* value = [[NSNumber alloc] initWithInteger:1];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                givenResult.asyncValue = value;
+                [givenResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(actionCallback) shouldEventually] beCalledWithValue:value result:givenResult onMainThread:NO];
 
             NSNumber* error = [[NSNumber alloc] initWithInteger:7];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                dependentResult.asyncError = error;
+                [dependentResult setAsyncError:error withMetadata:nil];
             });
             
             [[expectFutureValue(counter) shouldEventually] beCalledWithError:error result:finalResult onMainThread:NO];
@@ -179,14 +179,14 @@ describe(@"Chain", ^{
 
             NSNumber* value = [[NSNumber alloc] initWithInteger:1];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                givenResult.asyncValue = value;
+                [givenResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(actionCallback) shouldEventually] beCalledWithValue:value result:givenResult onMainThread:YES];
 
             value = [[NSNumber alloc] initWithInteger:2];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                dependentResult.asyncValue = value;
+                [dependentResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(counter) shouldEventually] beCalledWithValue:value result:finalResult onMainThread:NO];
@@ -198,14 +198,14 @@ describe(@"Chain", ^{
 
             NSNumber* value = [[NSNumber alloc] initWithInteger:1];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                givenResult.asyncValue = value;
+                [givenResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(actionCallback) shouldEventually] beCalledWithValue:value result:givenResult onMainThread:YES];
 
             NSNumber* error = [[NSNumber alloc] initWithInteger:7];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                dependentResult.asyncError = error;
+                [dependentResult setAsyncError:error withMetadata:nil];
             });
             
             [[expectFutureValue(counter) shouldEventually] beCalledWithError:error result:finalResult onMainThread:NO];
@@ -220,7 +220,7 @@ describe(@"Chain", ^{
             asyncWait(finalResult, counter.block);
 
             NSNumber* value = [[NSNumber alloc] initWithInteger:1];
-            givenResult.asyncValue = value;
+            [givenResult setAsyncValue:value withMetadata:nil];
 
             [[theValue(funcCallCount) should] equal:theValue(1)];
             [[theValue(funcState) should] equal:theValue(AsyncResultStateSuccess)];
@@ -228,7 +228,7 @@ describe(@"Chain", ^{
             [[theValue(funcOnMainThread) should] equal:theValue(YES)];
 
             value = [[NSNumber alloc] initWithInteger:2];
-            dependentResult.asyncValue = value;
+            [dependentResult setAsyncValue:value withMetadata:nil];
 
             [[counter should] beCalledWithValue:value result:finalResult onMainThread:YES];
         });
@@ -239,7 +239,7 @@ describe(@"Chain", ^{
 
             NSNumber* value = [[NSNumber alloc] initWithInteger:1];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                givenResult.asyncValue = value;
+                [givenResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(theValue(funcCallCount)) shouldEventually] equal:theValue(1)];
@@ -249,7 +249,7 @@ describe(@"Chain", ^{
 
             NSNumber* error = [[NSNumber alloc] initWithInteger:7];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                dependentResult.asyncError = error;
+                [dependentResult setAsyncError:error withMetadata:nil];
             });
 
             [[expectFutureValue(counter) shouldEventually] beCalledWithError:error result:finalResult onMainThread:NO];
@@ -265,7 +265,7 @@ describe(@"Chain", ^{
 
             NSNumber* value = [[NSNumber alloc] initWithInteger:1];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                givenResult.asyncValue = value;
+                [givenResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(theValue(funcCallCount)) shouldEventually] equal:theValue(1)];
@@ -275,7 +275,7 @@ describe(@"Chain", ^{
 
             value = [[NSNumber alloc] initWithInteger:2];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                dependentResult.asyncValue = value;
+                [dependentResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(counter) shouldEventually] beCalledWithValue:value result:finalResult onMainThread:NO];
@@ -287,7 +287,7 @@ describe(@"Chain", ^{
 
             NSNumber* value = [[NSNumber alloc] initWithInteger:1];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                givenResult.asyncValue = value;
+                [givenResult setAsyncValue:value withMetadata:nil];
             });
 
             [[expectFutureValue(theValue(funcCallCount)) shouldEventually] equal:theValue(1)];
@@ -297,7 +297,7 @@ describe(@"Chain", ^{
 
             NSNumber* error = [[NSNumber alloc] initWithInteger:7];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                dependentResult.asyncError = error;
+                [dependentResult setAsyncError:error withMetadata:nil];
             });
 
             [[expectFutureValue(counter) shouldEventually] beCalledWithError:error result:finalResult onMainThread:NO];

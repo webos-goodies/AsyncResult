@@ -42,12 +42,16 @@ describe(@"AsyncResult", ^{
         [result asyncWait:resultCallback2.block];
 
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
+        [[theValue(result.asyncIsSuccess) should] beNo];
+        [[theValue([AsyncResultUndefined isUndefined:result.asyncValue]) should] beYes];
+        [[theValue([AsyncResultUndefined isUndefined:result.asyncError]) should] beYes];
         [[theValue(resultCallback1.callCount) should] equal:theValue(0)];
         [[theValue(resultCallback2.callCount) should] equal:theValue(0)];
 
-        result.asyncValue = [[NSNumber alloc] initWithInteger:2];
+        [result setAsyncValue:[[NSNumber alloc] initWithInteger:2] withMetadata:nil];
 
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
+        [[theValue(result.asyncIsSuccess) should] beYes];
         [[result.asyncValue should] equal:[[NSNumber alloc] initWithInteger:2]];
         [[theValue(resultCallback1.callCount) should] equal:theValue(1)];
         [[theValue(resultCallback2.callCount) should] equal:theValue(1)];
@@ -62,9 +66,10 @@ describe(@"AsyncResult", ^{
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
         NSString* error   = @"Network Error";
-        result.asyncError = error;
+        [result setAsyncError:error withMetadata:nil];
 
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
+        [[theValue(result.asyncIsSuccess) should] beNo];
         [[result.asyncError should] equal:error];
         [[theValue(resultCallback1.callCount) should] equal:theValue(1)];
         [[theValue(resultCallback2.callCount) should] equal:theValue(1)];
@@ -74,7 +79,7 @@ describe(@"AsyncResult", ^{
     });
 
     it(@"should be able to attach a handler on a successful result", ^{
-        result.asyncValue = [[NSNumber alloc] initWithInteger:2];
+        [result setAsyncValue:[[NSNumber alloc] initWithInteger:2] withMetadata:nil];
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
         [[result.asyncValue should] equal:[[NSNumber alloc] initWithInteger:2]];
         // resultCallback should be called immediately on a resolved Result
@@ -88,7 +93,7 @@ describe(@"AsyncResult", ^{
 
     it(@"should be able to attach a handler on a successful result", ^{
         NSDictionary* error = @{ @"code":[[NSNumber alloc] initWithInteger:-1], @"errorString":@"Invalid JSON" };
-        result.asyncError = error;
+        [result setAsyncError:error withMetadata:nil];
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
         [[result.asyncError should] equal:error];
         // resultCallback should be called immediately on a resolved Result
@@ -101,40 +106,40 @@ describe(@"AsyncResult", ^{
     });
 
     it(@"should throw an exception on multiple successful resolution attempts", ^{
-        result.asyncValue = [[NSNumber alloc] initWithInteger:1];
+        [result setAsyncValue:[[NSNumber alloc] initWithInteger:1] withMetadata:nil];
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
         [[result.asyncValue should] equal:[[NSNumber alloc] initWithInteger:1]];
 
         // Try to set the value again
         [[theBlock(^{
-            result.asyncValue = [[NSNumber alloc] initWithInteger:4];
+            [result setAsyncValue:[[NSNumber alloc] initWithInteger:4] withMetadata:nil];
         }) should] raise];
     });
     
     it(@"should throw an exception on multiple error resolution attempts", ^{
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
-        result.asyncError = [[NSNumber alloc] initWithInteger:5];
+        [result setAsyncError:[[NSNumber alloc] initWithInteger:5] withMetadata:nil];
 
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
         [[result.asyncError should] equal:[[NSNumber alloc] initWithInteger:5]];
         // Try to set error again
         [[theBlock(^{
-            result.asyncError = [[NSNumber alloc] initWithInteger:4];
+            [result setAsyncError:[[NSNumber alloc] initWithInteger:4] withMetadata:nil];
         }) should] raise];
     });
 
     it(@"should throw an exception on success then error resolution attempt", ^{
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
-        result.asyncValue = [[NSNumber alloc] initWithInteger:1];
+        [result setAsyncValue:[[NSNumber alloc] initWithInteger:1] withMetadata:nil];
 
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
         [[result.asyncValue should] equal:[[NSNumber alloc] initWithInteger:1]];
 
         // Try to set error after setting value
         [[theBlock(^{
-            result.asyncError = [[NSNumber alloc] initWithInteger:3];
+            [result setAsyncError:[[NSNumber alloc] initWithInteger:3] withMetadata:nil];
         }) should] raise];
     });
 
@@ -142,13 +147,13 @@ describe(@"AsyncResult", ^{
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
         NSString* error = @"fail";
-        result.asyncError = error;
+        [result setAsyncError:error withMetadata:nil];
 
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
         [[result.asyncError should] equal:error];
         // Try to set value after setting error
         [[theBlock(^{
-            result.asyncValue = [[NSNumber alloc] initWithInteger:1];
+            [result setAsyncValue:[[NSNumber alloc] initWithInteger:1] withMetadata:nil];
         }) should] raise];
     });
 
@@ -160,7 +165,7 @@ describe(@"AsyncResult", ^{
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            result.asyncValue = [[NSNumber alloc] initWithInteger:1];
+            [result setAsyncValue:[[NSNumber alloc] initWithInteger:1] withMetadata:nil];
         });
 
         [[expectFutureValue(value) shouldEventually] equal:[[NSNumber alloc] initWithInteger:1]];
@@ -176,7 +181,7 @@ describe(@"AsyncResult", ^{
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            result.asyncError = @"Network failure";
+            [result setAsyncError:@"Network failure" withMetadata:nil];
         });
 
         [[expectFutureValue(error) shouldEventually] equal:@"Network failure"];
@@ -186,8 +191,10 @@ describe(@"AsyncResult", ^{
 
     it(@"should be cancelable", ^{
         [[theValue(result.asyncIsCanceled) should] beNo];
+        [[theValue(result.asyncIsSuccess) should] beNo];
         BOOL canceled = [result asyncCancel];
         [[theValue(result.asyncIsCanceled) should] beYes];
+        [[theValue(result.asyncIsSuccess) should] beNo];
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateError)];
         [[theValue(canceled) should] beYes];
     });
@@ -205,7 +212,7 @@ describe(@"AsyncResult", ^{
     it(@"should be cancelable after a value is set", ^{
         // cancel after setAsyncValue / setAsyncError => no-op
         [result asyncWait:resultCallback.block];
-        result.asyncValue = [[NSNumber alloc] initWithInteger:1];
+        [result setAsyncValue:[[NSNumber alloc] initWithInteger:1] withMetadata:nil];
 
         [[theValue(result.asyncState) should] equal:theValue(AsyncResultStateSuccess)];
         [[result.asyncValue should] equal:[[NSNumber alloc] initWithInteger:1]];
@@ -220,16 +227,16 @@ describe(@"AsyncResult", ^{
 
     it(@"should ignore values after cancel", ^{
         [result asyncWait:resultCallback.block];
-        [result.asyncValue shouldBeNil];
+        [[theValue([AsyncResultUndefined isUndefined:result.asyncValue]) should] beYes];
 
         [result asyncCancel];
         [[theValue(result.asyncIsCanceled) should] beYes];
 
-        result.asyncValue = [[NSNumber alloc] initWithInteger:1];
+        [result setAsyncValue:[[NSNumber alloc] initWithInteger:1] withMetadata:nil];
         [[theValue(result.asyncIsCanceled) should] beYes];
-        [result.asyncValue shouldBeNil];
+        [[theValue([AsyncResultUndefined isUndefined:result.asyncValue]) should] beYes];
 
-        result.asyncError = [[NSNumber alloc] initWithInteger:3];
+        [result setAsyncError:[[NSNumber alloc] initWithInteger:3] withMetadata:nil];
         [[theValue(result.asyncIsCanceled) should] beYes];
     });
 
@@ -245,7 +252,7 @@ describe(@"AsyncResult", ^{
         [result asyncWait:^(id<AsyncResult> result) {
             [result asyncIsCanceled];
         }];
-        result.asyncValue = nil;
+        [result setAsyncValue:nil withMetadata:nil];
         result = nil;
         [[expectFutureValue(weakPtr) shouldEventually] beNil];
     });

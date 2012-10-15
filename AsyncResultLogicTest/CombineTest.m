@@ -30,27 +30,27 @@ describe(@"Function", ^{
 
     void (^resolveAllGivenResultsToSuccess)() = ^{
         NSNumber* value = [[NSNumber alloc] initWithInteger:1];
-        result1.asyncValue = value;
-        result2.asyncValue = value;
-        result3.asyncValue = value;
-        result4.asyncValue = value;
+        [result1 setAsyncValue:value withMetadata:nil];
+        [result2 setAsyncValue:value withMetadata:nil];
+        [result3 setAsyncValue:value withMetadata:nil];
+        [result4 setAsyncValue:value withMetadata:nil];
     };
 
     void (^resolveAllGivenResultsToError)() = ^{
         NSNumber* error = [[NSNumber alloc] initWithInteger:2];
-        result1.asyncError = error;
-        result2.asyncError = error;
-        result3.asyncError = error;
-        result4.asyncError = error;
+        [result1 setAsyncError:error withMetadata:nil];
+        [result2 setAsyncError:error withMetadata:nil];
+        [result3 setAsyncError:error withMetadata:nil];
+        [result4 setAsyncError:error withMetadata:nil];
     };
 
     void (^resolveSomeGivenResultsToSuccess)() = ^{
         NSNumber* value = [[NSNumber alloc] initWithInteger:1];
         NSNumber* error = [[NSNumber alloc] initWithInteger:2];
-        result1.asyncError = error;
-        result2.asyncValue = value;
-        result3.asyncValue = value;
-        result4.asyncValue = value;
+        [result1 setAsyncError:error withMetadata:nil];
+        [result2 setAsyncValue:value withMetadata:nil];
+        [result3 setAsyncValue:value withMetadata:nil];
+        [result4 setAsyncValue:value withMetadata:nil];
     };
 
     beforeEach(^{

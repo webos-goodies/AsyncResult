@@ -76,7 +76,7 @@ describe(@"asyncTransform", ^{
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                result.asyncValue = [NSNumber numberWithInteger:1];
+                [result setAsyncValue:[NSNumber numberWithInteger:1] withMetadata:nil];
             });
 
             [[expectFutureValue(resultCallback) shouldEventually] beCalledWithValue:[NSNumber numberWithInteger:2] result:transformedResult onMainThread:NO];
@@ -88,7 +88,7 @@ describe(@"asyncTransform", ^{
             asyncWait(transformedResult, resultCallback.block);
 
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
-            result.asyncError = [NSNumber numberWithInteger:4];
+            [result setAsyncError:[NSNumber numberWithInteger:4] withMetadata:nil];
             [[multiplyResult shouldNot] beCalled];
             [[resultCallback should] beCalledWithError:[NSNumber numberWithInteger:4] result:transformedResult onMainThread:YES];
         });
@@ -99,7 +99,7 @@ describe(@"asyncTransform", ^{
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                result.asyncError = [NSNumber numberWithInteger:5];
+                [result setAsyncError:[NSNumber numberWithInteger:5] withMetadata:nil];
             });
 
             [[expectFutureValue(resultCallback) shouldEventually] beCalledWithError:[NSNumber numberWithInteger:5] result:transformedResult onMainThread:NO];
@@ -114,7 +114,7 @@ describe(@"asyncTransform", ^{
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                result.asyncValue = [NSNumber numberWithInteger:1];
+                [result setAsyncValue:[NSNumber numberWithInteger:1] withMetadata:nil];
             });
 
             [[expectFutureValue(resultCallback) shouldEventually] beCalledWithValue:[NSNumber numberWithInteger:2] result:transformedResult onMainThread:YES];
@@ -127,7 +127,7 @@ describe(@"asyncTransform", ^{
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                result.asyncError = [NSNumber numberWithInteger:5];
+                [result setAsyncError:[NSNumber numberWithInteger:5] withMetadata:nil];
             });
 
             [[expectFutureValue(resultCallback) shouldEventually] beCalledWithError:[NSNumber numberWithInteger:5] result:transformedResult onMainThread:NO];
@@ -141,7 +141,7 @@ describe(@"asyncTransform", ^{
             asyncWait(transformedResult, resultCallback.block);
 
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
-            result.asyncValue = [NSNumber numberWithInteger:1];
+            [result setAsyncValue:[NSNumber numberWithInteger:1] withMetadata:nil];
             assertCallTransformer([NSNumber numberWithInteger:1], YES);
             [[resultCallback should] beCalledWithValue:[NSNumber numberWithInteger:2] result:transformedResult onMainThread:YES];
         });
@@ -152,7 +152,7 @@ describe(@"asyncTransform", ^{
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                result.asyncValue = [NSNumber numberWithInteger:1];
+                [result setAsyncValue:[NSNumber numberWithInteger:1] withMetadata:nil];
             });
 
             [[expectFutureValue(resultCallback) shouldEventually] beCalledWithValue:[NSNumber numberWithInteger:2] result:transformedResult onMainThread:NO];
@@ -164,7 +164,7 @@ describe(@"asyncTransform", ^{
             asyncWait(transformedResult, resultCallback.block);
 
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
-            result.asyncError = [NSNumber numberWithInteger:4];
+            [result setAsyncError:[NSNumber numberWithInteger:4] withMetadata:nil];
             [[theValue(callCount) should] equal:theValue(0)];
             [[resultCallback should] beCalledWithError:[NSNumber numberWithInteger:4] result:transformedResult onMainThread:YES];
         });
@@ -175,7 +175,7 @@ describe(@"asyncTransform", ^{
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                result.asyncError = [NSNumber numberWithInteger:5];
+                [result setAsyncError:[NSNumber numberWithInteger:5] withMetadata:nil];
             });
 
             [[expectFutureValue(resultCallback) shouldEventually] beCalledWithError:[NSNumber numberWithInteger:5] result:transformedResult onMainThread:NO];
@@ -190,7 +190,7 @@ describe(@"asyncTransform", ^{
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                result.asyncValue = [NSNumber numberWithInteger:1];
+                [result setAsyncValue:[NSNumber numberWithInteger:1] withMetadata:nil];
             });
 
             [[expectFutureValue(resultCallback) shouldEventually] beCalledWithValue:[NSNumber numberWithInteger:2] result:transformedResult onMainThread:YES];
@@ -203,7 +203,7 @@ describe(@"asyncTransform", ^{
             [[theValue(result.asyncState) should] equal:theValue(AsyncResultStatePending)];
 
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                result.asyncError = [NSNumber numberWithInteger:5];
+                [result setAsyncError:[NSNumber numberWithInteger:5] withMetadata:nil];
             });
 
             [[expectFutureValue(resultCallback) shouldEventually] beCalledWithError:[NSNumber numberWithInteger:5] result:transformedResult onMainThread:NO];

@@ -25,6 +25,7 @@ typedef enum _AsyncResultState {
 @property (nonatomic, readonly) id asyncError;
 @property (nonatomic, readonly) NSDictionary* asyncMetadata;
 @property (nonatomic, readonly) NSInteger asyncState;
+@property (nonatomic, readonly) BOOL asyncIsSuccess;
 @property (nonatomic, readonly) BOOL asyncIsCanceled;
 - (BOOL)asyncCancel;
 - (void)asyncWait:(void(^)(id<AsyncResult> result))handler;
@@ -33,9 +34,12 @@ typedef enum _AsyncResultState {
 @interface AsyncResultCancel : NSObject
 @end
 
+@interface AsyncResultUndefined : NSObject
++ (AsyncResultUndefined*)sharedUndefined;
++ (BOOL)isUndefined:(id)object;
+@end
+
 @interface AsyncResult : NSObject<AsyncResult>
-@property (nonatomic) id asyncValue;
-@property (nonatomic) id asyncError;
 - (void)setAsyncValue:(id)value withMetadata:(NSDictionary*)metadata;
 - (void)setAsyncError:(id)error withMetadata:(NSDictionary*)metadata;
 @end

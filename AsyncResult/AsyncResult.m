@@ -21,6 +21,28 @@
 @end
 
 
+#pragma mark - AsyncResultUndefined
+static AsyncResultUndefined* singletonUndefined = nil;
+
+@implementation AsyncResultUndefined
+
++ (AsyncResultUndefined*)sharedUndefined
+{
+    // Though this method possibly returns a different object in a strict sense, it should not be a problem.
+    if(!singletonUndefined) {
+        singletonUndefined = [[AsyncResultUndefined alloc] init];
+    }
+    return singletonUndefined;
+}
+
++ (BOOL)isUndefined:(id)object
+{
+    return [object isMemberOfClass:[AsyncResultUndefined class]];
+}
+
+@end
+
+
 #pragma mark - AsyncResult
 
 @implementation AsyncResult {
@@ -37,8 +59,8 @@
     self = [super init];
     if (self) {
         _asyncState    = AsyncResultStatePending;
-        _asyncValue    = nil;
-        _asyncError    = nil;
+        _asyncValue    = [AsyncResultUndefined sharedUndefined];
+        _asyncError    = [AsyncResultUndefined sharedUndefined];
         _asyncMetadata = nil;
         _handlers      = [[NSMutableArray alloc] initWithCapacity:4];
     }
@@ -63,11 +85,6 @@
     }
 }
 
-- (void)setAsyncValue:(id)asyncValue
-{
-    [self setAsyncValue:asyncValue withMetadata:nil];
-}
-
 - (void)setAsyncError:(id)error withMetadata:(NSDictionary *)metadata
 {
     BOOL shouldCall = NO;
@@ -86,14 +103,14 @@
     }
 }
 
-- (void)setAsyncError:(id)asyncValue
+- (BOOL)asyncIsSuccess
 {
-    [self setAsyncError:asyncValue withMetadata:nil];
+    return _asyncState == AsyncResultStateSuccess;
 }
 
 - (BOOL)asyncIsCanceled
 {
-    return _asyncState == AsyncResultStateError && [self.asyncError isKindOfClass:[AsyncResultCancel class]];
+    return _asyncState == AsyncResultStateError && [self.asyncError isMemberOfClass:[AsyncResultCancel class]];
 }
 
 - (BOOL)asyncCancel
@@ -283,7 +300,7 @@ id<AsyncResult> asyncCombine(NSArray* results)
             if(resolved) {
                 @synchronized(combinedResult) {
                     if(combinedResult.asyncState == AsyncResultStatePending) {
-                        combinedResult.asyncValue = results;
+                        [combinedResult setAsyncValue:results withMetadata:nil];
                     }
                 }
             }
@@ -304,9 +321,9 @@ id<AsyncResult> asyncCombineSuccess(NSArray* results)
             succeeded = (result.asyncState == AsyncResultStateSuccess) && succeeded;
         }
         if(succeeded) {
-            combinedResult.asyncValue = results;
+            [combinedResult setAsyncValue:results withMetadata:nil];
         } else {
-            combinedResult.asyncError = results;
+            [combinedResult setAsyncError:results withMetadata:nil];
         }
     });
     

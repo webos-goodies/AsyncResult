@@ -209,6 +209,11 @@ static NSIndexSet* indexSetFromArray(NSArray* array)
     return [[AsyncResultInjector getValueForKey:@"result" from:self] asyncState];
 }
 
+- (BOOL)asyncIsSuccess
+{
+    return [[AsyncResultInjector getValueForKey:@"result" from:self] asyncIsSuccess];
+}
+
 - (BOOL)asyncIsCanceled
 {
     return [[AsyncResultInjector getValueForKey:@"result" from:self] asyncIsCanceled];
